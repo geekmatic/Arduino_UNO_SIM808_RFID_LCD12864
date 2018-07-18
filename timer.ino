@@ -39,5 +39,5 @@ ISR(TIMER1_COMPA_vect){//timer1 interrupt 1Hz toggles pin 13 (LED)
     draw(8);
   } while( u8g.nextPage() );
   dosend=1;
-  
+      
 }

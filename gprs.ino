@@ -16,6 +16,10 @@ void func_gprs() {
       str1 += ";";
       dosendgps = 0;
     }
+    if (dosendbalans==1){
+      str1 += "B=";
+      str1 += String(balans, 2);
+    }
 
     A6command("AT+HTTPPARA=\"URL\",\"bee.in.ua/" + str1 + "\"", "OK", "ERROR", 10000, 1);
     A6command("AT+HTTPPARA=\"CID\",1", "OK", "ERROR", 10000, 1);
@@ -31,6 +35,17 @@ void func_gprs() {
       A6command("AT+HTTPPARA=\"URL\",\"bee.in.ua/" + str1 + "\"", "OK", "ERROR", 10000, 1);
       A6command("AT+HTTPPARA=\"CID\",1", "OK", "ERROR", 10000, 1);
       A6command("AT+HTTPACTION=0", "+HTTPACTION:", "ERROR", 20000, 1);
+      if (signal_level_str.indexOf("+HTTPACTION: 0,200,")==-1){
+        u8g.firstPage();  
+        do {
+          draw(9);
+        } while( u8g.nextPage() );
+        tone(buzz, 200);
+        delay(600);
+        noTone(buzz);
+        delay(3000);
+        return;
+      }
     }
     signal_level_str = "";
     A6command("AT+HTTPREAD", "HTTPREAD", "ERROR", 20000, 1);
